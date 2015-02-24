@@ -1,0 +1,13 @@
+{
+    "version" : "0.1",
+    "name" : "WebGL_test",
+    "description" : "needless to say",
+    "launch_path" : "/index.html",
+    "developer" : {
+        "name" : "yammmt",
+        "url" : "https://github.com/yammmt/"
+    },
+    "icons" : {
+    },
+    "orientation": [ "landscape" ]
+}
