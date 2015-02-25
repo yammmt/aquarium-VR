@@ -7,7 +7,7 @@ var clock = new THREE.Clock();
 var spheres = [];
 const sphereNum = 10; // depend on device's power
 const xRange = 60;
-const yRange = 7;
+const yRange = 40;
 const zRange = 60;
 const speedRange = 1.0; // valid only for spheres(bubbles)
 
@@ -97,12 +97,31 @@ function init() {
     sphereMaterial.transparent = true;
     for(var i=0; i<sphereNum; i++) {
 	var sphereMesh = new THREE.Mesh(sphereGeometry, sphereMaterial);
-	var spherePosition = setPosition();
+	var spherePosition = setSpherePosition();
         sphereMesh.position.set(spherePosition.x, spherePosition.y, spherePosition.z);
-        sphereMesh.userData.speed = setSpeed();
+        sphereMesh.userData.speed = setSphereSpeed();
         scene.add(sphereMesh);
         spheres.push(sphereMesh);
     }
+
+    function setSpherePosition() {
+        var posX = decideSymbol()*Math.random()*xRange;
+        var posY = -1*Math.random()*yRange;
+        var posZ = decideSymbol()*Math.random()*zRange;
+        return new THREE.Vector3(posX, posY, posZ);
+
+        function decideSymbol() {
+	    if(Math.random() > 0.5) {
+	        return 1;
+	    }
+	    return -1;
+        }
+    }
+
+    function setSphereSpeed() {
+        return Math.random()*speedRange+0.2; // offset
+    }
+
 
     // add glasses
     loader = new THREE.JSONLoader();
@@ -181,24 +200,6 @@ function addFishZ(pointX, pointY, pointZ, direction, myColor) {
     });
 }
 
-function setPosition() {
-    var posX = decideSymbol()*Math.random()*xRange;
-    var posY = -1*Math.random()*yRange;
-    var posZ = decideSymbol()*Math.random()*zRange;
-    return new THREE.Vector3(posX, posY, posZ);
-
-    function decideSymbol() {
-	if(Math.random() > 0.5) {
-	    return 1;
-	}
-	return -1;
-    }
-}
-
-function setSpeed() {
-    return Math.random()*speedRange+0.2; // offset
-}
-
 function resize() {
     var width = container.offsetWidth;
     var height = container.offsetHeight;
@@ -214,7 +215,7 @@ function resize() {
 function update(dt) {
     for(var i=0; i<spheres.length; i++) {
 	spheres[i].position.y += spheres[i].userData.speed;
-	if(spheres[i].position.y > 40) {
+	if(spheres[i].position.y > yRange) {
 	    spheres[i].position.y = -3;
 	}
     }
