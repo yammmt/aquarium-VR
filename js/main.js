@@ -149,7 +149,10 @@ function init() {
     setTimeout(resize, 1);
 }
 
-function addFishX(pointX, pointY, pointZ, direction, myColor) {
+function addFishX(pointX, pointY, pointZ, myScale, myColor) {
+    if(!myScale) {
+	myScale = 1.0;
+    }
     if(!myColor) {
 	myColor = new THREE.Color(0x00ffff*Math.random());
     }
@@ -160,7 +163,7 @@ function addFishX(pointX, pointY, pointZ, direction, myColor) {
 	var mesh = new THREE.Mesh(geometry, material);
 	mesh.material.color = myColor;
 	mesh.position.set(pointX, pointY, pointZ);
-	mesh.scale.set(1.5, 1.5, 1.5);
+	mesh.scale.set(1.5*myScale, 1.5*myScale, 1.5*myScale);
 	mesh.userData.direction = 'X';
 	if(pointX > 0) {
 	    mesh.userData.speed = -1*fishSpeed;
@@ -175,7 +178,10 @@ function addFishX(pointX, pointY, pointZ, direction, myColor) {
     });
 }
 
-function addFishZ(pointX, pointY, pointZ, direction, myColor) {
+function addFishZ(pointX, pointY, pointZ, myScale, myColor) {
+    if(!myScale) {
+	myScale = 1.0;
+    }
     if(!myColor) {
 	myColor = new THREE.Color(0x00ffff*Math.random());
     }
@@ -186,7 +192,7 @@ function addFishZ(pointX, pointY, pointZ, direction, myColor) {
 	var mesh = new THREE.Mesh(geometry, material);
 	mesh.material.color = myColor;
 	mesh.position.set(pointX, pointY, pointZ);
-	mesh.scale.set(1.5, 1.5, 1.5);
+	mesh.scale.set(1.5*myScale, 1.5*myScale, 1.5*myS);
 	mesh.userData.direction = 'Z';
 	if(pointZ > 0) {
 	    mesh.userData.speed = -1*fishSpeed;
