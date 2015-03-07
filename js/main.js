@@ -145,7 +145,7 @@ function init() {
 	}
     });
 
-    window.addEventListener('resize', resize, false);
+    //window.addEventListener('resize', resize, false);
     setTimeout(resize, 1);
 }
 
@@ -192,7 +192,7 @@ function addFishZ(pointX, pointY, pointZ, myScale, myColor) {
 	var mesh = new THREE.Mesh(geometry, material);
 	mesh.material.color = myColor;
 	mesh.position.set(pointX, pointY, pointZ);
-	mesh.scale.set(1.5*myScale, 1.5*myScale, 1.5*myS);
+	mesh.scale.set(1.5*myScale, 1.5*myScale, 1.5*myScale);
 	mesh.userData.direction = 'Z';
 	if(pointZ > 0) {
 	    mesh.userData.speed = -1*fishSpeed;

@@ -1,6 +1,6 @@
 {
     "version" : "0.1",
-    "name" : "WebGL_test",
+    "name" : "aquarium",
     "description" : "needless to say",
     "launch_path" : "/index.html",
     "developer" : {
@@ -8,6 +8,6 @@
         "url" : "https://github.com/yammmt/"
     },
     "icons" : {
-    },
-    "orientation": [ "landscape" ]
+    }, 
+    "orientation" : [ "landscape-primary" ]
 }
