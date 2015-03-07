@@ -5,14 +5,14 @@ var element, container;
 var clock = new THREE.Clock();
 
 var spheres = [];
-const sphereNum = 10; // depend on device's power
+const sphereNum = 20; // 浮き上がる球の個数
+const speedRange = 1.0; // 浮き上がる球の速さの範囲
 const xRange = 60;
 const yRange = 40;
 const zRange = 60;
-const speedRange = 1.0; // valid only for spheres(bubbles)
 
 var fishes = [];
-var fishSpeed = 0.2;
+var fishSpeed = 0.2; // 魚の動く速さ
 
 const red = new THREE.Color(0xff0000);
 const green = new THREE.Color(0x00ff00);
