@@ -25,17 +25,15 @@
   <script src="js/third-party/threejs/StereoEffect.js"></script>
   <script src="js/third-party/threejs/DeviceOrientationControls.js"></script>
   <script src="js/third-party/threejs/OrbitControls.js"></script>
-  <!-- <script src="js/third-party/threejs/OculusRiftEffect.js"></script> -->
-  <!-- <script src="js/third-party/threejs/OculusControls.js"></script> -->
   <script src="js/main.js"></script>
 
   <script>
     init();
 
-    addFishX(10, 8, -6, 3.0, white);
-    addFishX(-8, 13, 8);
-    addFishZ(-6, 10, 10);
-    addFishZ(8, 3, -8);
+    addFishCX(10, 8, -6, 2.0, white);
+    addFishAX(-4, 12, 7, 0.4, red);
+    addFishBZ(10, 15, 6, 1.0, yellow);
+    addFishCZ(-8, 6, -7, 0.7, green);
 
     animate();
   </script>
