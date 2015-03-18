@@ -12,16 +12,7 @@ const yRange = 40;
 const zRange = 60;
 
 var fishes = [];
-var fishSpeed = 0.2; // 魚の動く速さ
-
-const red = new THREE.Color(0xff0000);
-const green = new THREE.Color(0x00ff00);
-const blue = new THREE.Color(0x0000ff);
-const cyan = new THREE.Color(0x00ffff);
-const magenta = new THREE.Color(0xff00ff);
-const yellow = new THREE.Color(0xffff00);
-const white = new THREE.Color(0xffffff);
-const black = new THREE.Color(0x000000);
+var fishSpeed = 0.2; // 魚の動く速さの初期値
 
 function init() {
     renderer = new THREE.WebGLRenderer();
@@ -45,7 +36,7 @@ function init() {
       camera.position.y,
       camera.position.z
     );
-    controls.noZoom = true;
+    controls.noZoom = false;
     controls.noPan = true;
 
     function setOrientationControls(e) {
@@ -148,175 +139,104 @@ function init() {
     setTimeout(resize, 1);
 }
 
-function addFishAX(pointX, pointY, pointZ, myScale, myColor) {
-    if(!myScale) {
-	myScale = 1.0;
+function addFish(fishData) {
+    if(!fishData) {
+	var fishData = {};
     }
-    if(!myColor) {
-	myColor = new THREE.Color(0x00ffff*Math.random());
+
+    if(!fishData.name) {
+	var tmp = Math.random();
+	if(tmp > 0.66) {
+	    fishData.name = 'model/fishA.json';
+	}
+	else if(tmp > 0.33) {
+	    fishData.name = 'model/fishB.json';
+	}
+	else {
+	    fishData.name = 'model/fishC.json';
+	}
+    }
+    else if(fishData.name == 'A') {
+	fishData.name = 'model/fishA.json';
+    }
+    else if(fishData.name == 'B') {
+	fishData.name = 'model/fishB.json';
+    }
+    else {
+	fishData.name = 'model/fishC.json';
+    }
+
+    if(!fishData.x) {
+	fishData.x = decideSymbol()*Math.random()*xRange;
+    }
+    if(!fishData.y) {
+	fishData.y = Math.random()*yRange;
+    }
+    if(!fishData.z) {
+	fishData.z = decideSymbol()*Math.random()*zRange;
+    }
+
+    if(!fishData.color) {
+        fishData.color = new THREE.Color(0xffffff*Math.random());
+    }
+    else {
+	fishData.color = new THREE.Color(fishData.color);
+    }
+
+    if(!fishData.scale) {
+        fishData.scale = 1.0;
+    }
+    if(!fishData.speed) {
+        fishData.speed = fishSpeed;
+    }
+    if(!fishData.direction) {
+        if(Math.random() > 0.5) {
+            fishData.direction = 'X';
+	}
+        else {
+            fishData.direction = 'Z';
+	}
     }
 
     loader = new THREE.JSONLoader();
-    loader.load('model/fishA.json', function(geometry) {
+    loader.load(fishData.name, function(geometry) {
 	var material = new THREE.MeshBasicMaterial();
 	var mesh = new THREE.Mesh(geometry, material);
-	mesh.material.color = myColor;
-	mesh.position.set(pointX, pointY, pointZ);
-	mesh.scale.set(1.5*myScale, 1.5*myScale, 1.5*myScale);
-	mesh.userData.direction = 'X';
-	if(pointX > 0) {
-	    mesh.userData.speed = -1*fishSpeed;
-	    mesh.rotation.set(0, -Math.PI/2, 0);
+	mesh.position.set(fishData.x, fishData.y, fishData.z);
+	mesh.material.color = fishData.color;
+	mesh.scale.set(fishData.scale, fishData.scale, fishData.scale);
+	mesh.userData.direction = fishData.direction;
+	if(mesh.userData.direction == 'X') {
+	    if(fishData.x > 0) {
+		mesh.userData.speed = -1*fishData.speed;
+		mesh.rotation.set(0, -Math.PI/2, 0);
+	    }
+	    else {
+		mesh.userData.speed = fishData.speed;
+		mesh.rotation.set(0, Math.PI/2, 0);
+	    }
 	}
-	else {
-   	    mesh.userData.speed = fishSpeed;
-	    mesh.rotation.set(0, Math.PI/2, 0);
+	else if(mesh.userData.direction == 'Z') {
+	    if(fishData.z > 0) {
+		mesh.userData.speed = -1*fishData.speed;
+		mesh.rotation.set(Math.PI, 0, 0);
+	    }
+	    else {
+		mesh.userData.speed = fishSpeed;
+	    }
 	}
 	scene.add(mesh);
 	fishes.push(mesh);
     });
-}
 
-function addFishAZ(pointX, pointY, pointZ, myScale, myColor) {
-    if(!myScale) {
-	myScale = 1.0;
-    }
-    if(!myColor) {
-	myColor = new THREE.Color(0x00ffff*Math.random());
-    }
-
-    loader = new THREE.JSONLoader();
-    loader.load('model/fishA.json', function(geometry) {
-	var material = new THREE.MeshBasicMaterial();
-	var mesh = new THREE.Mesh(geometry, material);
-	mesh.material.color = myColor;
-	mesh.position.set(pointX, pointY, pointZ);
-	mesh.scale.set(1.5*myScale, 1.5*myScale, 1.5*myScale);
-	mesh.userData.direction = 'Z';
-	if(pointZ > 0) {
-	    mesh.userData.speed = -1*fishSpeed;
-	    mesh.rotation.set(Math.PI, 0, 0);
+    function decideSymbol() {
+	if(Math.random() > 0.5) {
+	    return 1;
 	}
 	else {
-	    mesh.userData.speed = fishSpeed;
+	    return -1;
 	}
-	scene.add(mesh);
-	fishes.push(mesh);
-    });
-}
-
-function addFishBX(pointX, pointY, pointZ, myScale, myColor) {
-    if(!myScale) {
-	myScale = 1.0;
     }
-    if(!myColor) {
-	myColor = new THREE.Color(0x00ffff*Math.random());
-    }
-
-    loader = new THREE.JSONLoader();
-    loader.load('model/fishB.json', function(geometry) {
-	var material = new THREE.MeshBasicMaterial();
-	var mesh = new THREE.Mesh(geometry, material);
-	mesh.material.color = myColor;
-	mesh.position.set(pointX, pointY, pointZ);
-	mesh.scale.set(0.2*myScale, 0.2*myScale, 0.2*myScale);
-	mesh.userData.direction = 'X';
-	if(pointX > 0) {
-	    mesh.userData.speed = -1*fishSpeed;
-	    mesh.rotation.set(0, -Math.PI/2, 0);
-	}
-	else {
-   	    mesh.userData.speed = fishSpeed;
-	    mesh.rotation.set(0, Math.PI/2, 0);
-	}
-	scene.add(mesh);
-	fishes.push(mesh);
-    });
-}
-
-function addFishBZ(pointX, pointY, pointZ, myScale, myColor) {
-    if(!myScale) {
-	myScale = 1.0;
-    }
-    if(!myColor) {
-	myColor = new THREE.Color(0x00ffff*Math.random());
-    }
-
-    loader = new THREE.JSONLoader();
-    loader.load('model/fishB.json', function(geometry) {
-	var material = new THREE.MeshBasicMaterial();
-	var mesh = new THREE.Mesh(geometry, material);
-	mesh.material.color = myColor;
-	mesh.position.set(pointX, pointY, pointZ);
-	mesh.scale.set(0.2*myScale, 0.2*myScale, 0.2*myScale);
-	mesh.userData.direction = 'Z';
-	if(pointZ > 0) {
-	    mesh.userData.speed = -1*fishSpeed;
-	    mesh.rotation.set(Math.PI, 0, 0);
-	}
-	else {
-	    mesh.userData.speed = fishSpeed;
-	}
-	scene.add(mesh);
-	fishes.push(mesh);
-    });
-}
-
-function addFishCX(pointX, pointY, pointZ, myScale, myColor) {
-    if(!myScale) {
-	myScale = 1.0;
-    }
-    if(!myColor) {
-	myColor = new THREE.Color(0x00ffff*Math.random());
-    }
-
-    loader = new THREE.JSONLoader();
-    loader.load('model/fishC.json', function(geometry) {
-	var material = new THREE.MeshBasicMaterial();
-	var mesh = new THREE.Mesh(geometry, material);
-	mesh.material.color = myColor;
-	mesh.position.set(pointX, pointY, pointZ);
-	mesh.scale.set(0.2*myScale, 0.2*myScale, 0.2*myScale);
-	mesh.userData.direction = 'X';
-	if(pointX > 0) {
-	    mesh.userData.speed = -1*fishSpeed;
-	    mesh.rotation.set(0, -Math.PI/2, 0);
-	}
-	else {
-   	    mesh.userData.speed = fishSpeed;
-	    mesh.rotation.set(0, Math.PI/2, 0);
-	}
-	scene.add(mesh);
-	fishes.push(mesh);
-    });
-}
-
-function addFishCZ(pointX, pointY, pointZ, myScale, myColor) {
-    if(!myScale) {
-	myScale = 1.0;
-    }
-    if(!myColor) {
-	myColor = new THREE.Color(0x00ffff*Math.random());
-    }
-
-    loader = new THREE.JSONLoader();
-    loader.load('model/fishC.json', function(geometry) {
-	var material = new THREE.MeshBasicMaterial();
-	var mesh = new THREE.Mesh(geometry, material);
-	mesh.material.color = myColor;
-	mesh.position.set(pointX, pointY, pointZ);
-	mesh.scale.set(0.2*myScale, 0.2*myScale, 0.2*myScale);
-	mesh.userData.direction = 'Z';
-	if(pointZ > 0) {
-	    mesh.userData.speed = -1*fishSpeed;
-	    mesh.rotation.set(Math.PI, 0, 0);
-	}
-	else {
-	    mesh.userData.speed = fishSpeed;
-	}
-	scene.add(mesh);
-	fishes.push(mesh);
-    });
 }
 
 function resize() {
