@@ -30,7 +30,7 @@ function init() {
     container = document.getElementById('example');
     container.appendChild(element);
 
-    effect = new THREE.StereoEffect(renderer);
+    //effect = new THREE.StereoEffect(renderer);
 
     scene = new THREE.Scene();
 
@@ -328,7 +328,7 @@ function resize() {
     camera.updateProjectionMatrix();
 
     renderer.setSize(width, height);
-    effect.setSize(width, height);
+    //effect.setSize(width, height);
 }
 
 function update(dt) {
@@ -359,7 +359,8 @@ function update(dt) {
 }
 
 function render(dt) {
-    effect.render(scene, camera);
+    renderer.render(scene, camera);
+    //effect.render(scene, camera);
 }
 
 function animate(t) {
