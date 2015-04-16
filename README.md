@@ -1,5 +1,5 @@
 # aquarium-VR
-~~with Cardboard~~
+Cardboard 的なものでみると立体視ができるあれ
 ## 使い方
 1. index.html をブラウザ (Firefox) で開くと, 魚らしき物体が三体動いているのが見える.
 2. index.html をテキストエディタ (メモ帳など) で開く.
